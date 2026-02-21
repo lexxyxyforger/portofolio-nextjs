@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@400;600;700;800&display=swap");
+@import "tailwindcss";
+@source "../components";
+@source "../app";
+
+:root {
+  --font-display: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --bg: #f8f6f0;
+  --bg-secondary: #efede6;
+  --text: #0f0f0f;
+  --text-secondary: #555;
+  --border: #d9d7d0;
+  --accent: #f0a500;
+  --accent-dim: #d4920a;
+  --card: #ffffff;
+  --card-border: #e5e3dc;
+}
+
+.dark {
+  --bg: #0a0806;
+  --bg-secondary: #110e09;
+  --text: #f0ede6;
+  --text-secondary: #9a9994;
+  --border: #2a2015;
+  --accent: #f0a500;
+  --accent-dim: #d4920a;
+  --card: #110e09;
+  --card-border: #1e1a0f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: #000;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.noise-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.glow-text {
+  text-shadow: 0 0 30px rgba(240, 165, 0, 0.4);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  transition:
+    border-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(240, 165, 0, 0.1);
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 25%,
+    var(--border) 50%,
+    var(--bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 9999;
+  transition: width 0.1s;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.animate-blink {
+  animation: animate-blink 1s step-end infinite;
+}
+
+@keyframes animate-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    border-right-color: var(--accent);
+  }
+  50% {
+    border-right-color: transparent;
+  }
+}
