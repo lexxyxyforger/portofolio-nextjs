@@ -1,39 +1,17 @@
 "use client";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useRef } from "react";
 import { experiences } from "@/data/portfolio";
 import { Briefcase, GraduationCap, Zap } from "lucide-react";
 
 const glowColors: Record<string, string> = {
-  work: "rgba(139,92,246,0.6)",
-  education: "rgba(6,182,212,0.6)",
+  work: "rgba(139,92,246,0.5)",
+  education: "rgba(6,182,212,0.5)",
 };
 
-function FloatingOrb({ cx, cy, r, color }: { cx: string; cy: string; r: string; color: string }) {
-  return (
-    <motion.div
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        left: cx,
-        top: cy,
-        width: r,
-        height: r,
-        background: color,
-        filter: "blur(80px)",
-        transform: "translate(-50%, -50%)",
-      }}
-      animate={{
-        scale: [1, 1.3, 1],
-        opacity: [0.15, 0.3, 0.15],
-      }}
-      transition={{ duration: 6 + Math.random() * 4, repeat: Infinity, ease: "easeInOut" }}
-    />
-  );
-}
-
 function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
   const cardRef = useRef<HTMLDivElement>(null);
   const isWork = exp.type !== "education";
   const accent = isWork ? "#8b5cf6" : "#06b6d4";
@@ -43,9 +21,9 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -20;
-    card.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg) translateZ(8px)`;
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 14;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -14;
+    card.style.transform = `perspective(800px) rotateX(${y}deg) rotateY(${x}deg) translateZ(6px)`;
   };
 
   const handleMouseLeave = () => {
@@ -57,42 +35,39 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 60, scale: 0.92 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 36 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       className="relative"
     >
       <div className="flex gap-4 sm:gap-8 items-start">
         <div className="flex flex-col items-center gap-0 flex-shrink-0 pt-1">
-          <motion.div
-            whileHover={{ scale: 1.2, rotate: 10 }}
+          <div
             style={{
-              background: `linear-gradient(135deg, ${accent}22, ${accent}44)`,
-              border: `1.5px solid ${accent}66`,
-              boxShadow: `0 0 20px ${accentGlow}, inset 0 1px 0 ${accent}33`,
+              background: `linear-gradient(135deg, ${accent}20, ${accent}40)`,
+              border: `1.5px solid ${accent}55`,
+              boxShadow: `0 0 16px ${accentGlow}`,
             }}
-            className="w-11 h-11 rounded-2xl flex items-center justify-center relative overflow-hidden"
+            className="w-11 h-11 rounded-2xl flex items-center justify-center relative overflow-hidden flex-shrink-0"
           >
             <div
               className="absolute inset-0 opacity-20"
-              style={{
-                background: `radial-gradient(circle at 30% 30%, white, transparent 70%)`,
-              }}
+              style={{ background: "radial-gradient(circle at 30% 30%, white, transparent 70%)" }}
             />
-            {isWork
-              ? <Briefcase size={16} color={accent} />
-              : <GraduationCap size={16} color={accent} />}
-          </motion.div>
+            {isWork ? <Briefcase size={16} color={accent} /> : <GraduationCap size={16} color={accent} />}
+          </div>
 
           {index < experiences.length - 1 && (
-            <div className="relative w-0.5 flex-1 min-h-[80px] my-2 overflow-hidden rounded-full"
-              style={{ background: "rgba(255,255,255,0.06)" }}>
+            <div
+              className="relative w-0.5 flex-1 min-h-[80px] my-2 overflow-hidden rounded-full"
+              style={{ background: "rgba(255,255,255,0.06)" }}
+            >
               <motion.div
                 className="absolute top-0 left-0 w-full rounded-full"
                 style={{ background: `linear-gradient(to bottom, ${accent}, transparent)` }}
                 initial={{ height: "0%" }}
                 animate={inView ? { height: "100%" } : {}}
-                transition={{ duration: 1.2, delay: index * 0.12 + 0.4, ease: "easeOut" }}
+                transition={{ duration: 1.0, delay: index * 0.1 + 0.35, ease: "easeOut" }}
               />
             </div>
           )}
@@ -110,23 +85,20 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
             style={{
               background: "rgba(255,255,255,0.03)",
               border: "1px solid rgba(255,255,255,0.08)",
-              backdropFilter: "blur(20px)",
-              boxShadow: `0 4px 40px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.08)`,
+              backdropFilter: "blur(16px)",
+              boxShadow: `0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07)`,
             }}
           >
             <div
-              className="absolute -top-20 -right-20 w-60 h-60 rounded-full pointer-events-none"
+              className="absolute -top-20 -right-20 w-56 h-56 rounded-full pointer-events-none"
               style={{
                 background: `radial-gradient(circle, ${accentGlow} 0%, transparent 70%)`,
-                opacity: 0.15,
+                opacity: 0.12,
               }}
             />
-
             <div
               className="absolute top-0 left-0 right-0 h-px"
-              style={{
-                background: `linear-gradient(90deg, transparent, ${accent}66, transparent)`,
-              }}
+              style={{ background: `linear-gradient(90deg, transparent, ${accent}55, transparent)` }}
             />
 
             <div className="relative z-10">
@@ -134,13 +106,13 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
                 <div>
                   <h3
                     className="font-bold text-xl tracking-tight mb-1"
-                    style={{ fontFamily: "'Cabinet Grotesk', 'Clash Display', sans-serif" }}
+                    style={{ fontFamily: "'Outfit', sans-serif", color: "rgba(255,255,255,0.92)" }}
                   >
                     {exp.role}
                   </h3>
                   <div className="flex items-center gap-2">
                     <Zap size={11} color={accent} />
-                    <p className="text-sm font-semibold" style={{ color: accent, fontFamily: "monospace" }}>
+                    <p className="text-sm font-semibold font-mono" style={{ color: accent }}>
                       {exp.company}
                     </p>
                   </div>
@@ -150,7 +122,7 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
                   className="text-xs font-mono px-3 py-1.5 rounded-xl flex-shrink-0"
                   style={{
                     background: `${accent}12`,
-                    border: `1px solid ${accent}33`,
+                    border: `1px solid ${accent}30`,
                     color: accent,
                   }}
                 >
@@ -158,28 +130,26 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
                 </span>
               </div>
 
-              <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>
+              <p
+                className="text-sm leading-relaxed mb-5"
+                style={{ color: "rgba(255,255,255,0.48)", fontFamily: "'DM Sans', sans-serif" }}
+              >
                 {exp.description}
               </p>
 
               <div className="flex flex-wrap gap-2">
-                {exp.techStack.map((tech, ti) => (
-                  <motion.span
+                {exp.techStack.map((tech) => (
+                  <span
                     key={tech}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: index * 0.12 + 0.5 + ti * 0.04 }}
-                    whileHover={{ scale: 1.08, y: -2 }}
                     className="px-3 py-1 rounded-full text-xs font-mono"
                     style={{
                       background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      color: "rgba(255,255,255,0.6)",
-                      cursor: "default",
+                      border: "1px solid rgba(255,255,255,0.09)",
+                      color: "rgba(255,255,255,0.55)",
                     }}
                   >
                     {tech}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             </div>
@@ -191,40 +161,36 @@ function Card3D({ exp, index }: { exp: typeof experiences[0]; index: number }) {
 }
 
 export function Experience() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const { ref, inView } = useInView({ triggerOnce: true });
 
   return (
     <section
       id="experience"
-      ref={containerRef}
       className="relative py-32 overflow-hidden"
       style={{ background: "#050508" }}
     >
-      <FloatingOrb cx="10%" cy="20%" r="500px" color="rgba(139,92,246,0.3)" />
-      <FloatingOrb cx="85%" cy="60%" r="400px" color="rgba(6,182,212,0.2)" />
-      <FloatingOrb cx="50%" cy="90%" r="350px" color="rgba(168,85,247,0.15)" />
-
-      <motion.div
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          y: bgY,
-          backgroundImage: `
-            linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px)
-          `,
+          backgroundImage: `linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
         }}
+      />
+      <div
+        className="absolute top-1/4 left-[10%] w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%)", filter: "blur(60px)" }}
+      />
+      <div
+        className="absolute bottom-1/3 right-[15%] w-[320px] h-[320px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)", filter: "blur(60px)" }}
       />
 
       <div className="max-w-3xl mx-auto px-6 relative z-10">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16"
         >
           <div className="flex items-center gap-4 mb-6">
@@ -242,11 +208,11 @@ export function Experience() {
             <div className="h-px flex-1" style={{ background: "linear-gradient(90deg, rgba(139,92,246,0.5), transparent)" }} />
           </div>
 
-          <div className="relative">
+          <div className="relative inline-block">
             <h2
               className="text-5xl sm:text-6xl font-black tracking-tight"
               style={{
-                fontFamily: "'Cabinet Grotesk', 'Clash Display', sans-serif",
+                fontFamily: "'Outfit', sans-serif",
                 background: "linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.4) 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -260,7 +226,7 @@ export function Experience() {
               style={{ background: "linear-gradient(90deg, #8b5cf6, #06b6d4, transparent)" }}
               initial={{ width: "0%" }}
               animate={inView ? { width: "40%" } : {}}
-              transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+              transition={{ duration: 1.0, delay: 0.35, ease: "easeOut" }}
             />
           </div>
         </motion.div>

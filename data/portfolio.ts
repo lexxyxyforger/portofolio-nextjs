@@ -164,30 +164,55 @@ export const projects = [
     year: "2023",
     tags: ["E-Commerce", "PHP", "MySQL"],
   },
-  {
+ {
     id: "6",
     slug: "Snapshot Code",
-    title: "TechStore",
+    title: "Snapshot Code",
     description:
-      "Toko elektronik online dengan katalog produk dinamis, keranjang belanja, dan sistem checkout yang smooth dari awal sampai selesai.",
+      "Tool untuk menghasilkan screenshot kode yang indah dan siap share ke mana saja.",
     longDescription:
-      "Platform e-commerce untuk produk teknologi dengan fitur filter produk, wishlist, cart management, dan integrasi payment lokal.",
-    techStack: ["PHP", "MySQL", "API"],
-    image: "https://i.ibb.co.com/QFmRwbWy/Cuplikan-layar-2026-02-10-175231.png",
-    previewUrl: null,
-    repoUrl: "https://github.com/example/techstore",
+      "Snapshot Code memungkinkan developer mengubah kode mereka menjadi gambar estetik dengan kustomisasi penuh — tema warna, font, padding, background, dan watermark. Output siap dipakai untuk portofolio, media sosial, atau dokumentasi.",
+    techStack: ["Next.js", "API"],
+    image: "https://i.ibb.co.com/NnjwnQnT/image.png",
+    previewUrl: "https://snapshot-code.vercel.app/",
+    repoUrl: "https://github.com/example/snapshot-code",
     featured: false,
     status: "open-source",
     features: [
-      "Product catalog & filter",
-      "Cart & wishlist",
-      "Order management",
-      "Payment integration",
+      "Kustomisasi tema & warna",
+      "Pilihan font programming",
+      "Export PNG / SVG",
+      "Background gradient & blur",
     ],
     problemSolving:
-      "Inconsistent cart state antar session. Solved dengan server-side session management dan database-backed cart.",
+      "Developer sering share kode sebagai teks biasa yang susah dibaca. Snapshot Code mengubahnya jadi visual yang clean dan profesional dalam hitungan detik.",
     year: "2023",
-    tags: ["E-Commerce", "PHP", "MySQL"],
+    tags: ["Snapshot", "Next.js", "Tool"],
+  },
+  {
+    id: "7",
+    slug: "URL-Shortener",
+    title: "URL Shortener",
+    description:
+      "Perpendek URL panjang jadi link bersih yang mudah dibagikan dan dilacak.",
+    longDescription:
+      "Platform URL shortener dengan fitur custom alias, tracking klik real-time, dan analytics sederhana. Dibangun untuk cepat, ringan, dan bisa diintegrasikan via API ke project lain.",
+    techStack: ["PHP", "MySQL", "API"],
+    image: "https://i.ibb.co.com/NnjwnQnT/image.png",
+    previewUrl: "https://snapshot-code.vercel.app/",
+    repoUrl: "https://github.com/example/url-shortener",
+    featured: false,
+    status: "open-source",
+    features: [
+      "Custom alias URL",
+      "Klik tracking & analytics",
+      "API endpoint tersedia",
+      "QR code generator",
+    ],
+    problemSolving:
+      "Link panjang susah dibagikan dan tidak bisa dilacak. URL Shortener memberi kontrol penuh atas link — dari alias hingga statistik klik.",
+    year: "2023",
+    tags: ["URL", "PHP", "API"],
   },
 ];
 
@@ -312,7 +337,6 @@ export const blogPosts = [
     views: 2103,
   },
 ];
-
 export const certificates = [
   {
     id: "1",
@@ -321,7 +345,7 @@ export const certificates = [
     date: "2023-12",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771552434/download_doy9qf.jpg",
     description:
-      "Mempelajari Dasar dasar coding",
+      "Menguasai fundamental programming — logic, algoritma, dan problem solving sebagai pondasi karir developer.",
   },
   {
     id: "2",
@@ -330,16 +354,16 @@ export const certificates = [
     date: "2024-03",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771552634/uc_a7ch4g.jpg",
     description:
-      "Membangun fullstack aplikasi dengan Next.js App Router, server components, API routes, authentication, dan deployment ke Vercel.",
+      "Menguasai Python untuk data science — dari manipulasi data dengan Pandas, visualisasi, hingga analisis statistik berbasis AI.",
   },
   {
     id: "3",
-    title: "AI ENGINEER - AI MARCHINE LEARNING",
+    title: "AI ENGINEER - AI MACHINE LEARNING",
     issuer: "Timedoor Academy",
     date: "2025-10",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771552831/uc_ejp43j.jpg",
     description:
-      "Membangun REST API, GraphQL, authentication, real-time apps dengan WebSocket, dan deployment menggunakan Node.js dan Express.",
+      "Membangun dan melatih model machine learning — supervised learning, evaluasi model, dan implementasi ke aplikasi nyata.",
   },
   {
     id: "4",
@@ -348,7 +372,7 @@ export const certificates = [
     date: "2025-03",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771553056/uc_yfzscr.jpg",
     description:
-      "Membangun REST API, GraphQL, authentication, real-time apps dengan WebSocket, dan deployment menggunakan Node.js dan Express.",
+      "Membangun aplikasi Android yang fungsional dan production-ready — dari UI/UX hingga integrasi API dan deployment ke Play Store.",
   },
   {
     id: "5",
@@ -357,7 +381,7 @@ export const certificates = [
     date: "2026-01",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771553611/uc_jwvjvz.jpg",
     description:
-      "Membangun REST API, GraphQL, authentication, real-time apps dengan WebSocket, dan deployment menggunakan Node.js dan Express.",
+      "Mengimplementasikan computer vision — deteksi objek, image classification, dan real-time visual AI menggunakan Python dan OpenCV.",
   },
   {
     id: "6",
@@ -366,7 +390,7 @@ export const certificates = [
     date: "2024-10",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771553784/uc_qbr8xr.jpg",
     description:
-      "Mempelajari dasar dasar web developer ",
+      "Menguasai HTML, CSS, dan JavaScript untuk membangun website yang responsif dan interaktif dari nol.",
   },
   {
     id: "7",
@@ -375,7 +399,6 @@ export const certificates = [
     date: "2026-02",
     image: "https://res.cloudinary.com/dhzxohznj/image/upload/v1771553942/img19_n7myw0.jpg",
     description:
-      "Membangun REST API, GraphQL, authentication, real-time apps dengan WebSocket, dan deployment menggunakan Node.js dan Express.",
+      "Membangun website modern end-to-end — frontend responsif, backend API, database, authentication, dan deployment production.",
   },
-
 ];

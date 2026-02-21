@@ -19,31 +19,31 @@ export function Footer() {
     >
       <div
         className="absolute inset-x-0 top-0 h-px pointer-events-none"
-        style={{ background: `linear-gradient(90deg, transparent, ${ACCENT}40, transparent)` }}
+        style={{ background: `linear-gradient(90deg, transparent, ${ACCENT}35, transparent)` }}
       />
       <div
         className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-32 rounded-full pointer-events-none"
-        style={{ background: `radial-gradient(ellipse, ${ACCENT}06, transparent 70%)`, filter: "blur(40px)" }}
+        style={{ background: `radial-gradient(ellipse, ${ACCENT}05, transparent 70%)`, filter: "blur(40px)" }}
       />
 
       <div className="max-w-5xl mx-auto px-6 py-10 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -16 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-2.5 select-none"
           >
             <div
               className="w-7 h-7 rounded-lg flex items-center justify-center relative overflow-hidden"
-              style={{ background: `${ACCENT}15`, border: `1px solid ${ACCENT}35` }}
+              style={{ background: `${ACCENT}14`, border: `1px solid ${ACCENT}32` }}
             >
-              <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 60%)" }} />
+              <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 60%)" }} />
               <Terminal size={13} color={ACCENT} />
             </div>
             <span
               className="font-bold text-base"
-              style={{ fontFamily: "'Syne', sans-serif", color: "rgba(255,255,255,0.85)", letterSpacing: "-0.03em" }}
+              style={{ fontFamily: "'Outfit', sans-serif", color: "rgba(255,255,255,0.85)", letterSpacing: "-0.03em" }}
             >
               {personalInfo.name.split(" ")[0]}
               <span style={{ color: ACCENT }}>.</span>
@@ -51,32 +51,24 @@ export function Footer() {
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-2 text-xs"
-            style={{ fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)" }}
+            style={{ fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.22)" }}
           >
             Built with
-            <motion.span
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Heart size={11} style={{ color: "#ef4444", fill: "#ef4444" }} />
-            </motion.span>
+            <Heart size={11} style={{ color: "#ef4444", fill: "#ef4444" }} />
             using Next.js & TailwindCSS
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 16 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-3"
           >
-            <p
-              className="text-xs"
-              style={{ fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.2)" }}
-            >
+            <p className="text-xs" style={{ fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.18)" }}>
               © {new Date().getFullYear()} {personalInfo.name}
             </p>
 
@@ -86,27 +78,26 @@ export function Footer() {
               href={`https://github.com/${personalInfo.github}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-all duration-200"
-              style={{ color: "rgba(255,255,255,0.25)" }}
+              className="transition-colors duration-200"
+              style={{ color: "rgba(255,255,255,0.22)" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.22)")}
             >
               <Github size={14} />
             </a>
 
-            <motion.button
+            <button
               onClick={scrollToTop}
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-200"
+              className="w-7 h-7 rounded-lg flex items-center justify-center"
               style={{
                 background: `${ACCENT}10`,
-                border: `1px solid ${ACCENT}25`,
+                border: `1px solid ${ACCENT}22`,
                 color: ACCENT,
+                transition: "background 0.2s, box-shadow 0.2s",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = `${ACCENT}20`;
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = `0 0 16px ${ACCENT}25`;
+                (e.currentTarget as HTMLButtonElement).style.background = `${ACCENT}1e`;
+                (e.currentTarget as HTMLButtonElement).style.boxShadow = `0 0 14px ${ACCENT}20`;
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLButtonElement).style.background = `${ACCENT}10`;
@@ -114,7 +105,7 @@ export function Footer() {
               }}
             >
               <ArrowUp size={12} />
-            </motion.button>
+            </button>
           </motion.div>
         </div>
       </div>

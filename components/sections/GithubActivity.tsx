@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Github, GitCommit, ExternalLink, Zap } from "lucide-react";
 import { personalInfo } from "@/data/portfolio";
@@ -40,159 +40,101 @@ function getCommitType(message: string) {
 }
 
 function CommitRow({ a, index, inView }: { a: Activity; index: number; inView: boolean }) {
-  const rowRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const accent = COMMIT_ACCENTS[index % COMMIT_ACCENTS.length];
   const commitType = getCommitType(a.message);
   const typeColor = TYPE_COLORS[commitType] ?? "#F0A500";
   const cleanMessage = a.message.replace(/^\w+:\s*/, "");
 
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [3, -3]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-3, 3]), { stiffness: 300, damping: 30 });
-  const glowX = useTransform(rawX, [-0.5, 0.5], [0, 100]);
-  const glowY = useTransform(rawY, [-0.5, 0.5], [0, 100]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!rowRef.current) return;
-    const rect = rowRef.current.getBoundingClientRect();
-    rawX.set((e.clientX - rect.left) / rect.width - 0.5);
-    rawY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, [rawX, rawY]);
-
-  const handleReset = useCallback(() => {
-    rawX.set(0);
-    rawY.set(0);
-    setHovered(false);
-  }, [rawX, rawY]);
-
   return (
     <motion.div
-      initial={{ opacity: 0, x: -24, scale: 0.97 }}
-      animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
-      transition={{ delay: index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      style={{ perspective: 800 }}
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ delay: index * 0.06, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      <motion.div
-        ref={rowRef}
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        onMouseMove={handleMouseMove}
+      <div
         onMouseEnter={() => setHovered(true)}
-        onMouseLeave={handleReset}
-        className="relative cursor-default select-none touch-manipulation"
+        onMouseLeave={() => setHovered(false)}
+        className="relative rounded-xl overflow-hidden border flex items-center gap-4 px-4 py-3.5 cursor-default select-none"
+        style={{
+          background: "linear-gradient(155deg, #141414 0%, #0b0b0b 100%)",
+          borderColor: hovered ? `${accent}40` : "rgba(255,255,255,0.06)",
+          boxShadow: hovered
+            ? `0 10px 32px -10px rgba(0,0,0,0.75), 0 0 0 1px ${accent}10, inset 0 1px 0 rgba(255,255,255,0.06)`
+            : "0 2px 12px -2px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03)",
+          transform: hovered ? "translateX(3px)" : "translateX(0)",
+          transition: "border-color 0.25s, box-shadow 0.25s, transform 0.25s ease",
+        }}
       >
         <div
-          className="absolute -inset-1 rounded-2xl pointer-events-none"
+          className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full"
           style={{
-            background: `radial-gradient(ellipse at 10% 50%, ${accent}18, transparent 60%)`,
-            filter: "blur(10px)",
-            opacity: hovered ? 1 : 0,
-            transition: "opacity 0.3s",
+            background: typeColor,
+            opacity: hovered ? 1 : 0.35,
+            transition: "opacity 0.25s",
           }}
         />
 
         <div
-          className="relative rounded-xl overflow-hidden border flex items-center gap-4 px-4 py-3.5"
+          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ml-2"
           style={{
-            background: "linear-gradient(155deg, #141414 0%, #0b0b0b 100%)",
-            borderColor: hovered ? `${accent}45` : "rgba(255,255,255,0.06)",
-            boxShadow: hovered
-              ? `0 12px 40px -10px rgba(0,0,0,0.8), 0 0 0 1px ${accent}12, inset 0 1px 0 rgba(255,255,255,0.06)`
-              : "0 2px 12px -2px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03)",
-            transition: "border-color 0.3s, box-shadow 0.3s",
+            background: `${typeColor}14`,
+            border: `1px solid ${typeColor}28`,
+            boxShadow: hovered ? `0 0 10px ${typeColor}25` : "none",
+            transition: "box-shadow 0.25s",
           }}
         >
-          {hovered && (
-            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl" style={{ opacity: 0.07 }}>
-              <motion.div
-                className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
-                style={{ background: `radial-gradient(circle at ${glowX}% ${glowY}%, white, transparent 50%)` }}
-              />
-            </div>
-          )}
+          <GitCommit size={13} style={{ color: typeColor }} />
+        </div>
 
-          <div
-            className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full"
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <span className="font-mono text-[11px] font-bold" style={{ color: accent }}>
+              {a.repo}
+            </span>
+            <span
+              className="font-mono text-[9px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider"
+              style={{ background: `${typeColor}14`, border: `1px solid ${typeColor}25`, color: typeColor }}
+            >
+              {commitType}
+            </span>
+            <span
+              className="font-mono text-[9px] px-1.5 py-0.5 rounded"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.22)" }}
+            >
+              {a.sha.slice(0, 7)}
+            </span>
+          </div>
+          <p
+            className="text-xs truncate"
             style={{
-              background: typeColor,
-              opacity: hovered ? 1 : 0.4,
-              transition: "opacity 0.3s",
-            }}
-          />
-
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ml-2"
-            style={{
-              background: `${typeColor}15`,
-              border: `1px solid ${typeColor}30`,
-              boxShadow: hovered ? `0 0 12px ${typeColor}30` : "none",
-              transition: "box-shadow 0.3s",
+              color: hovered ? "rgba(255,255,255,0.68)" : "rgba(255,255,255,0.36)",
+              fontFamily: "'DM Sans', sans-serif",
+              transition: "color 0.25s",
             }}
           >
-            <GitCommit size={13} style={{ color: typeColor }} />
-          </div>
+            {cleanMessage}
+          </p>
+        </div>
 
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <span
-                className="font-mono text-[11px] font-bold"
-                style={{ color: accent }}
-              >
-                {a.repo}
-              </span>
-              <span
-                className="font-mono text-[9px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider"
+        <div className="flex-shrink-0 flex flex-col items-end gap-1.5">
+          <span className="font-mono text-[10px]" style={{ color: "rgba(255,255,255,0.18)" }}>
+            {a.date}
+          </span>
+          <div className="flex gap-0.5">
+            {[0, 1].map((d) => (
+              <div
+                key={d}
+                className="w-1 h-1 rounded-full"
                 style={{
-                  background: `${typeColor}15`,
-                  border: `1px solid ${typeColor}28`,
-                  color: typeColor,
+                  background: hovered ? accent : "rgba(255,255,255,0.1)",
+                  transition: `background 0.25s ${d * 0.06}s`,
                 }}
-              >
-                {commitType}
-              </span>
-              <span
-                className="font-mono text-[9px] px-1.5 py-0.5 rounded"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  color: "rgba(255,255,255,0.25)",
-                }}
-              >
-                {a.sha.slice(0, 7)}
-              </span>
-            </div>
-            <p
-              className="text-xs truncate"
-              style={{
-                color: hovered ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.38)",
-                fontFamily: "'DM Sans', sans-serif",
-                transition: "color 0.3s",
-              }}
-            >
-              {cleanMessage}
-            </p>
-          </div>
-
-          <div className="flex-shrink-0 flex flex-col items-end gap-1.5">
-            <span className="font-mono text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>
-              {a.date}
-            </span>
-            <div className="flex gap-0.5">
-              {[0, 1].map((d) => (
-                <div
-                  key={d}
-                  className="w-1 h-1 rounded-full"
-                  style={{
-                    background: hovered ? accent : "rgba(255,255,255,0.1)",
-                    transition: `background 0.3s ${d * 0.08}s`,
-                  }}
-                />
-              ))}
-            </div>
+              />
+            ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -213,23 +155,20 @@ export function GithubActivity() {
   return (
     <section ref={ref} className="py-28 relative overflow-hidden">
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse, #22C55E04 0%, transparent 70%)",
-          filter: "blur(80px)",
-        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(ellipse, #22C55E04 0%, transparent 70%)", filter: "blur(80px)" }}
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="mb-14"
         >
           <div className="flex items-center gap-3 mb-5">
             <div className="h-px flex-1" style={{ background: "rgba(255,255,255,0.06)" }} />
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--accent, #F0A500)" }}>
+            <span className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "#F0A500" }}>
               06_activity
             </span>
           </div>
@@ -238,16 +177,13 @@ export function GithubActivity() {
               <div className="flex items-center gap-3 mb-1">
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center"
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   <Github size={18} style={{ color: "rgba(255,255,255,0.7)" }} />
                 </div>
                 <h2
                   className="text-4xl sm:text-5xl font-bold"
-                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "-0.02em" }}
+                  style={{ fontFamily: "'Outfit', sans-serif", letterSpacing: "-0.03em" }}
                 >
                   GitHub Activity
                 </h2>
@@ -261,13 +197,10 @@ export function GithubActivity() {
               href={`https://github.com/${personalInfo.github}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs transition-all duration-300 group"
-              style={{
-                border: "1px solid rgba(255,255,255,0.08)",
-                color: "rgba(255,255,255,0.45)",
-              }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs transition-all duration-250"
+              style={{ border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.45)" }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#F0A50055";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "#F0A50050";
                 (e.currentTarget as HTMLAnchorElement).style.color = "#F0A500";
               }}
               onMouseLeave={(e) => {
@@ -288,11 +221,7 @@ export function GithubActivity() {
                 <div
                   key={i}
                   className="h-[62px] rounded-xl animate-pulse"
-                  style={{
-                    background: "linear-gradient(90deg, #141414, #0f0f0f, #141414)",
-                    backgroundSize: "200% 100%",
-                    animation: `pulse 1.5s ease-in-out ${i * 0.1}s infinite`,
-                  }}
+                  style={{ background: "#141414", opacity: 1 - i * 0.1 }}
                 />
               ))
             : activities.map((a, i) => (
